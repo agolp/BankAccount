@@ -3,10 +3,21 @@
 class BankAccount
 {
     protected int $balance;
+    protected int $authorized_buffer;
 
-    public function __construct(int $balance = 0)
+    public function __construct(int $balance = 0, int $authorized_buffer = 0)
     {
         $this->balance = $balance;
+        $this->setAuthorizedBuffer($authorized_buffer);
+    }
+
+    /**
+     * Set the allowed negative buffer
+     */
+    public function setAuthorizedBuffer(int $authorized_buffer)
+    {
+        $this->checkAmount($authorized_buffer);
+        $this->authorized_buffer = $authorized_buffer;
     }
 
     /**
@@ -46,7 +57,7 @@ class BankAccount
     public function debit(int $amount): BankAccount
     {
         $this->checkAmount($amount);
-        if ($amount > $this->balance) {
+        if ($amount > $this->balance + $this->authorized_buffer) {
             throw new BankAccountException('Insufficient funds in bank account');
         }
         $this->balance -= $amount;

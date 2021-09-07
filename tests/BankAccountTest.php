@@ -59,4 +59,30 @@ final class BankAccountTest extends TestCase
         $this->expectException(BankAccountException::class);
         $account->debit(-1);
     }
+
+    public function testDebitWithAuthorizedBuffer(): void
+    {
+        $account = new BankAccount(0, 10);
+        $account->debit(5);
+        $this->assertEquals(-5, $account->getBalance());
+    }
+
+    public function testTransferWithAuthorizedBuffer(): void
+    {
+        $a1 = new BankAccount(50, 50);
+        $a2 = new BankAccount(20);
+        $a1->transfer($a2, 80);
+        $this->assertEquals(-30, $a1->getBalance());
+        $this->assertEquals(100, $a2->getBalance());
+    }
+
+    public function testCannotTransferMoreThanBalanceAndBuffer(): void
+    {
+        $a1 = new BankAccount(50, 30);
+        $a2 = new BankAccount(20);
+        $this->expectException(BankAccountException::class);
+        $a1->transfer($a2, 100);
+        $this->assertEquals(50, $a1->getBalance());
+        $this->assertEquals(20, $a2->getBalance());
+    }
 }
