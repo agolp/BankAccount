@@ -10,6 +10,14 @@ class BankAccount
     }
 
     /**
+     * Return the account balance
+     */
+    public function getBalance(): int
+    {
+        return $this->balance;
+    }
+
+    /**
      * Credit the account with the supplied amount
      */
     public function credit(int $amount): BankAccount
@@ -33,10 +41,11 @@ class BankAccount
     }
 
     /**
-     * Return the account balance
+     * Transfer the supplied amount to the target bank account
      */
-    public function getBalance(): int
+    public function transfer(BankAccount $target, int $amount)
     {
-        return $this->balance;
+        $this->debit($amount);
+        $target->credit($amount);
     }
 }

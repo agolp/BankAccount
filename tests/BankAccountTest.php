@@ -30,4 +30,23 @@ final class BankAccountTest extends TestCase
         $this->expectException(BankAccountException::class);
         $account->debit(100);
     }
+
+    public function testTransferBetweenAccounts(): void
+    {
+        $a1 = new BankAccount(50);
+        $a2 = new BankAccount(20);
+        $a1->transfer($a2, 15);
+        $this->assertEquals(35, $a1->getBalance());
+        $this->assertEquals(35, $a2->getBalance());
+    }
+
+    public function testCannotTransferMoreThanBalance(): void
+    {
+        $a1 = new BankAccount(50);
+        $a2 = new BankAccount(20);
+        $this->expectException(BankAccountException::class);
+        $a1->transfer($a2, 80);
+        $this->assertEquals(50, $a1->getBalance());
+        $this->assertEquals(20, $a2->getBalance());
+    }
 }
