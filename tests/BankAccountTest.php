@@ -49,4 +49,14 @@ final class BankAccountTest extends TestCase
         $this->assertEquals(50, $a1->getBalance());
         $this->assertEquals(20, $a2->getBalance());
     }
+
+    public function testAmountCannotBeNegative(): void
+    {
+        $account = new BankAccount();
+        $this->expectException(BankAccountException::class);
+        $account->credit(-5);
+        $account = new BankAccount();
+        $this->expectException(BankAccountException::class);
+        $account->debit(-1);
+    }
 }

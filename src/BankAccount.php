@@ -18,10 +18,23 @@ class BankAccount
     }
 
     /**
+     * Check amount
+     */
+    public function checkAmount(int $amount): BankAccount
+    {
+        if ($amount < 0) {
+            throw new BankAccountException('The supplied amount should be positive');
+        }
+
+        return $this;
+    }
+
+    /**
      * Credit the account with the supplied amount
      */
     public function credit(int $amount): BankAccount
     {
+        $this->checkAmount($amount);
         $this->balance += $amount;
 
         return $this;
@@ -32,6 +45,7 @@ class BankAccount
      */
     public function debit(int $amount): BankAccount
     {
+        $this->checkAmount($amount);
         if ($amount > $this->balance) {
             throw new BankAccountException('Insufficient funds in bank account');
         }
