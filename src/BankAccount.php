@@ -20,6 +20,19 @@ class BankAccount
     }
 
     /**
+     * Debit the account with the supplied amount
+     */
+    public function debit(int $amount): BankAccount
+    {
+        if ($amount > $this->balance) {
+            throw new BankAccountException('Insufficient funds in bank account');
+        }
+        $this->balance -= $amount;
+
+        return $this;
+    }
+
+    /**
      * Return the account balance
      */
     public function getBalance(): int

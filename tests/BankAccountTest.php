@@ -16,4 +16,18 @@ final class BankAccountTest extends TestCase
         $account->credit(100);
         $this->assertEquals(100, $account->getBalance());
     }
+
+    public function testBalancePostDebit(): void
+    {
+        $account = new BankAccount(100);
+        $account->debit(51);
+        $this->assertEquals(49, $account->getBalance());
+    }
+
+    public function testCannotDebitMoreThanBalance(): void
+    {
+        $account = new BankAccount(50);
+        $this->expectException(BankAccountException::class);
+        $account->debit(100);
+    }
 }
