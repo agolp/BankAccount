@@ -4,9 +4,9 @@ class BankAccount
 {
     protected int $balance;
 
-    public function __construct()
+    public function __construct(int $balance = 0)
     {
-        $this->balance = 0;
+        $this->balance = $balance;
     }
 
     /**
